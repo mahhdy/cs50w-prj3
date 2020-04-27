@@ -163,6 +163,12 @@ USE_TZ = True
 
 STATIC_URL = '/orders/static/'
 LOGIN_URL = '/orders/login/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+]
+STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'users.CustomUser'
+
