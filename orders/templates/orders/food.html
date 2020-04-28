@@ -6,13 +6,13 @@
 
 {% block content %}
 <div class="row row-cols-1 row-cols-md-3  row-cols-lg-4 ">
-{% for t in foods%}
+{% for t in food%}
   <div class="col mb-4">
     <div class="card">
       <img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}">
       <div class="card-body">
         <h5 class="card-title" href='{% url "food" t.id %}'>{{t.name}}</h5>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text">This is a longer card with supporting text.</p>
       </div>
     </div>
   </div>

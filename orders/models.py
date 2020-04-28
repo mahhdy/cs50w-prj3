@@ -31,7 +31,7 @@ class Topping(models.Model):
 
 class Food_type(models.Model):
     name = models.CharField(max_length=15)
-    picture = models.ImageField(upload_to='foods/', default='default.jpg')
+    picture = models.ImageField(upload_to='foods/', default='foods/default.jpg')
 
     def get_absolute_url(self):
         return reverse('course', kwargs={"pk": self.pk})
@@ -47,7 +47,7 @@ class Food(models.Model):
     name = models.CharField(max_length=30)
     size = models.CharField(max_length=5, choices=fSize)
     food_type = models.ForeignKey(Food_type,null=True,blank=True, on_delete=models.SET_NULL)
-    topping_cout=models.PositiveIntegerField(default=0)
+    topping_count=models.PositiveIntegerField(default=0)
     price = models.DecimalField(decimal_places=2,max_digits=10)
     picture = models.ImageField(upload_to='foods/', default='default.jpg')
    # Metadata

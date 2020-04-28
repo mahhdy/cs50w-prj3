@@ -1,28 +1,81 @@
-{% extends "base.html" %}
-{% block head %}
-{% endblock %}
+{% extends "base.html" %} {% block head %} {% endblock %} {% block title %} Main
+Page {% endblock %} {% block content %}
 
-{% block title %}  Main Page  {% endblock %}
-
-{% block content %}
-<div class="row row-cols-1 row-cols-md-3  row-cols-lg-4 ">
-{% for t in types%}
-  <div class="col mb-4">
-    <div class="card">
-      <img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}">
-      <div class="card-body">
-        <h5 class="card-title">{{t.name}}</h5>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+<div></div>
+<div class='row'>
+  <div class="col-12 col-md-10">
+    <div class="row justify-content-center">
+      <h1>Welcome to Pinoccio Pizza</h1>
+      <div class="row row-cols-1 row-cols-md-3">
+        {% for t in types%}
+        <div class="col mb-4">
+          <div class="card">
+            <a href='{% url "courses" t.id %}'>
+              <img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}" />
+            </a>
+            <div class="card-body">
+              <a href='{% url "courses" t.id %}'>
+                <h5 class="card-title">{{t.name}}</h5>
+              </a>
+              <div class="input-group">
+                <select class="custom-select" onchange='updatePrice(this)'>
+                  {% for f in foods %}
+                      {% if f.food_type == t %}<option data-toppings='{{f.topping_count}}' data-price='{{f.price}}' value='{{f.id}}'>{{f.size}} {{f.name }}</option> {% endif%}
+                  {% endfor %}
+                </select>
+                <div class="input-group-append">
+                  <span class="input-group-text">Price</span>
+                  <button class="btn btn-outline-secondary" type="button">Order</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        {% endfor%}
       </div>
-    </div>
+    </div>    
   </div>
-{% endfor%}
+
+  <div class="col-md-2 d-none d-md-block">
+    <h4 class='text-center'>Shopping Basket</h4>
+    <p> empty...</p>
+  </div>  
 </div>
-
+{% endblock %} {% block script %}
+<script>
+  const basket=[];
+  const total=()=>basket.reduce((a,b)=> a+Number(b.price),0);
+  counter=1;
+  function items(item,id,name,quantity,price,topping,extra){
+    this.item=item;
+    this.id=id;
+    this.name=name;
+    this.quantity=quantity;
+    this.price=price;
+    this.topping=topping;
+    this.extra=extra;
+    this.total=function(){
+      return this.quantity * this.price;
+    };
+  };
+  const updatePrice=el=>{
+    let p = $(el).find(':selected').data('price');
+    $(el).next().find('span').text(p);
+  }
+  $(() => {
+    $(".carousel").carousel();
+    $('.input-group-append button').click(function(){
+      let d= $(this).parent().prev().find(':selected').data();
+      let n=new items(counter,this.value,this.innerText,1,d.price,d.toppings,'');
+      n.csrfmiddlewaretoken='{{ csrf_token }}'
+      basket.push(n);
+      counter++;
+      $.post('order/add/',n,function(data){
+        console.log(data);
+      });
+    });
+  });
+</script>
 {% endblock %}
-
-{% block script %}
-{% endblock %}
-
-
-  
+</div>

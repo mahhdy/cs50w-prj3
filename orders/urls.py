@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("", views.index, name=""),
-    path("food_type/<int:pk>/", views.food_types, name="courses"),
-    path("food/<int:pk>/", views.foods, name="foods"),
+    path("food_type/<int:id>/", views.food_types, name="courses"),
+    path("food/<int:id>/", views.foods, name="foods"),
+    path('order/add/',views.addOrder,name='addtobasket'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

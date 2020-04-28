@@ -5,14 +5,16 @@
 {% block title %}  {{food_types.name}} Page  {% endblock %}
 
 {% block content %}
+<h1 class='text-center'>{{food_types.name}}</h1>
+
 <div class="row row-cols-1 row-cols-md-3  row-cols-lg-4 ">
 {% for t in foods%}
   <div class="col mb-4">
     <div class="card">
-      <img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}">
+      <a href='{% url "foods" t.id %}'><img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}"></a>
       <div class="card-body">
-        <h5 class="card-title" href='{% url "food" t.id %}'>{{t.name}}</h5>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <a href='{% url "foods" t.id %}'> <h5 class="card-title">{{t.name}}</h5></a>
+        <p class="card-text">This is a longer card with supporting text.</p>
       </div>
     </div>
   </div>
