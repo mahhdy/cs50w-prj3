@@ -1,11 +1,10 @@
-{% extends "base.html" %} {% block head %} {% endblock %} {% block title %} Main
-Page {% endblock %} {% block content %}
+{% extends "base.html" %} {% block head %} {% endblock %} {% block title %}Pinnochio’s Pizza & Subs{% endblock %}
+{% block content %}
 
-<div></div>
-<div class='row'>
-  <div class="col-12 col-md-10">
+<div class='row mx-auto' style="max-width: 1400px;">
+  <div class="col-12 col-md-9">
     <div class="row justify-content-center">
-      <h1>Welcome to Pinoccio Pizza</h1>
+      <h1 class='my-3'>Welcome to Pinnochio’s Pizza & Subs</h1>
       <div class="row row-cols-1 row-cols-md-3">
         {% for t in types%}
         <div class="col mb-4">
@@ -20,62 +19,68 @@ Page {% endblock %} {% block content %}
               <div class="input-group">
                 <select class="custom-select" onchange='updatePrice(this)'>
                   {% for f in foods %}
-                      {% if f.food_type == t %}<option data-toppings='{{f.topping_count}}' data-price='{{f.price}}' value='{{f.id}}'>{{f.size}} {{f.name }}</option> {% endif%}
+                  {% if f.food_type == t %}<option data-toppings='{{f.topping_count}}' data-price='{{f.price}}'
+                    data-extra='{{f.accepts_extra|lower}}' value='{{f.id}}'>{{f.size|capfirst}} {{f.name|capfirst }}
+                  </option>
+                  {% endif%}
                   {% endfor %}
                 </select>
                 <div class="input-group-append">
-                  <span class="input-group-text">Price</span>
-                  <button class="btn btn-outline-secondary" type="button">Order</button>
+                  <span class="input-group-text px-1">0</span>
+                  <span class='my-auto'><a href='#'><i class="fas fa-cart-plus text-dark fa-lg"
+                        onclick='addMeToBasket(this)'></i></a></span>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
         {% endfor%}
       </div>
-    </div>    
+    </div>
   </div>
+  <div class="col-md-3 d-none d-md-block mt-3 " style='max-height:700px;overflow:auto'>
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">Your cart</span>
+      <span class="badge badge-secondary badge-pill" data-inBasket>0</span>
+    </h4>
+    <ul class="list-group" id='theBasket'>
+    </ul>
+    <ul class="list-group mb-3">
+      <li class="list-group-item d-flex justify-content-between py-2">
+        <h5 class="text-dark">Total (CAD)</h5>
+        <h5><strong class="text-dark">$0</strong></h5>
+      </li>
+    </ul>
 
-  <div class="col-md-2 d-none d-md-block">
-    <h4 class='text-center'>Shopping Basket</h4>
-    <p> empty...</p>
-  </div>  
+    <form class="card p-2 mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Promo code">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-secondary">Redeem</button>
+        </div>
+      </div>
+    </form>
+    <form class="card p-2">
+      <div class="input-group d-flex justify-content-between px-4">
+        <button type='button' class="btn btn-success" onclick="submitOrder()">ORDER</button>
+        <button type='button' class="btn btn-info" onclick="resetBasket()">RESET</button>
+      </div>
+    </form>
+  </div>
 </div>
+
 {% endblock %} {% block script %}
 <script>
-  const basket=[];
-  const total=()=>basket.reduce((a,b)=> a+Number(b.price),0);
-  counter=1;
-  function items(item,id,name,quantity,price,topping,extra){
-    this.item=item;
-    this.id=id;
-    this.name=name;
-    this.quantity=quantity;
-    this.price=price;
-    this.topping=topping;
-    this.extra=extra;
-    this.total=function(){
-      return this.quantity * this.price;
-    };
-  };
-  const updatePrice=el=>{
-    let p = $(el).find(':selected').data('price');
-    $(el).next().find('span').text(p);
-  }
   $(() => {
-    $(".carousel").carousel();
-    $('.input-group-append button').click(function(){
-      let d= $(this).parent().prev().find(':selected').data();
-      let n=new items(counter,this.value,this.innerText,1,d.price,d.toppings,'');
-      n.csrfmiddlewaretoken='{{ csrf_token }}'
-      basket.push(n);
-      counter++;
-      $.post('order/add/',n,function(data){
-        console.log(data);
-      });
-    });
+    $('#theBasket').empty();
+    if (localStorage.getItem('pizzaOrder')) {
+      basket = JSON.parse(localStorage.getItem('pizzaOrder'));
+      basket.forEach(o => addToBasket(o));
+    }
+    $('select').trigger('change');
+    updateTotal();
   });
-</script>
-{% endblock %}
-</div>
+
+
+  </script>
+  {% endblock %}

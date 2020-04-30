@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block title %} Shopping Cart {% endblock %}
+
+{% block content %}
+<div class="row text-Center">
+  <div class='col-12 col-md-6 mx-auto' style='max-width:450px;'>
+    <h3 class='text-center mt-5 pb-3'>Your Cart </h3>
+    <ul class="list-group" id='theBasket'>
+    </ul>
+    <ul class="list-group mb-3">
+      <li class="list-group-item d-flex justify-content-between py-2">
+        <h5 class="text-dark">Total (CAD)</h5>
+        <h5><strong class="text-dark">$0</strong></h5>
+      </li>
+    </ul>
+
+    <form class="card p-2 mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Promo code">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-secondary">Redeem</button>
+        </div>
+      </div>
+    </form>
+    <form class="card p-2">
+      <div class="input-group d-flex justify-content-between px-4">
+        <button type='button' class="btn btn-success" onclick="submitOrder()">PLACE ORDER</button>
+        <button type='button' class="btn btn-info" onclick="resetBasket()">CANCEL ORDER</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+  $(() => {
+    $('#theBasket').empty();
+    if (localStorage.getItem('pizzaOrder')) {
+      basket = JSON.parse(localStorage.getItem('pizzaOrder'));
+      basket.forEach(o => addToBasket(o));
+    }
+    updateTotal();
+  });
+</script>
+{% endblock %}

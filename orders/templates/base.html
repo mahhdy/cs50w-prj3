@@ -5,15 +5,20 @@
   {% load static %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"
+    integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ=" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
+  <script src="https://kit.fontawesome.com/793887ff29.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="{% static 'orders/app.js' %}"></script>
   {% block head %}
   {% endblock %}
   <title>{% block title %} {% endblock %}</title>
@@ -21,8 +26,8 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href='{% url "index" %}'>Menu</a>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <a class="navbar-brand" href='{% url "index" %}'>Home Page</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -31,16 +36,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href='{% url "index" %}'>Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href='{% url "courses" "1" %}'>Regular Pizza<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "" %}'>Add</a>
+            <a class="nav-link" href='{%url "courses" "2" %}'>Sicillian Pizza</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "" %}'>Add</a>
+            <a class="nav-link" href='{%url "courses" "3" %}'>Subs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "" %}'>Add</a>
+            <a class="nav-link" href='{%url "courses" "4" %}'>Salads</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href='{%url "" %}' id="navbarDropdown" role="button"
@@ -55,10 +60,25 @@
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+           <a class="nav-link" href='{% url "cart" %}'>  
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span class="text-danger" data-inBasket>0</span>
+          </a>
+          </li> 
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href='{% url "profile" %}' id='nav_profile' role="button" data-toggle="dropdown" >
+              <i class="fas fa-user-alt fa-lg"></i>
+            </a>
+            <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="nav_profile">
+              <a class="dropdown-item" href='{%url "" %}'>Orders</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href='{%url "logout" %}'>Log Out</a>
+            </div>
+          </li>
+                   
+        </ul>
       </div>
     </nav>
   </header>
@@ -69,7 +89,9 @@
     {% endblock %}
     <!-- </div> -->
   </main>
-  
+  <footer>
+
+  </footer>
   {% block script %}
   {% endblock %}
 </body>

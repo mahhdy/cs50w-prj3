@@ -34,7 +34,7 @@ class Food_type(models.Model):
     picture = models.ImageField(upload_to='foods/', default='foods/default.jpg')
 
     def get_absolute_url(self):
-        return reverse('course', kwargs={"pk": self.pk})
+        return reverse('courses', args=[self.pk])
 
     def get_image_url(self):
         return settings.MEDIA_URL + self.image.url
@@ -48,8 +48,9 @@ class Food(models.Model):
     size = models.CharField(max_length=5, choices=fSize)
     food_type = models.ForeignKey(Food_type,null=True,blank=True, on_delete=models.SET_NULL)
     topping_count=models.PositiveIntegerField(default=0)
+    accepts_extra=models.BooleanField(default=False)
     price = models.DecimalField(decimal_places=2,max_digits=10)
-    picture = models.ImageField(upload_to='foods/', default='default.jpg')
+    picture = models.ImageField(upload_to='foods/', default='default.gif')
    # Metadata
 
     class Meta:
@@ -57,10 +58,7 @@ class Food(models.Model):
    # Methods
 
     def get_absolute_url(self):
-        return reverse('index')
-
-    # def get_image_url(self):
-    #     return settings.MEDIA_URL + 'foods/' + self.image.url
+        return reverse('foods', args=[self.id])
 
     def __str__(self):
         return self.food_type.name + "/" + self.name + self.size
