@@ -3,3 +3,4 @@ crispy_forms
 psycopg2
 Pillow
 marshmallow
+django-registration

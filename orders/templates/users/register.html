@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class='text-center mb-3'>Register</h1>
+{% if message %}
+    <div>
+        {{ message }}
+    </div>
+{% endif %}
+<div class='mx-auto my-auto' style='max-width:400px'>
+    <form action="{% url 'registnew' %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}            
+            {{ field }}
+            {% if field.help_text %}
+            <br>
+            <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+
+        </p>
+        {% endfor %}
+        <div class=' text-center'>
+        <input type="submit" class='btn btn-primary' value="Register"/>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
