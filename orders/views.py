@@ -20,6 +20,31 @@ def addOrder(request):
         return JsonResponse({'data': 'Love', 'received': openOrder.note})
     return False
 
+@login_required
+def submitOrder(request):
+    if request.method == 'POST':
+        newOrder, created=Order.baskets.get_or_create(customer=request.user)
+        details=json.loads(request.POST.get('obj', None))
+        for d in details:
+            ex=d['topping'] if d['topping'] else ''
+            ex+=d['extra'] if d['extra'] else ''
+            f=Food.objects.get(pk=d['id'])
+            a=Order_detail.objects.create(order=newOrder,extra=ex,food=f,quantity=d['quantity'])
+            if f.topping_count:
+                t=d['topping'].split('+')
+                for x in range(f.topping_count):
+                    try:
+                        b=Topping.objects.get(name=t[x].strip())
+                        a.toppings.add(b)
+                    except Exception as e:
+                        print(e)
+            a.save()
+            newOrder.details=a
+        newOrder.status='initiated'
+        newOrder.confirmed=True
+        newOrder.save()
+        return JsonResponse({'orderNo': newOrder.id})
+    return False
 def signup(request):
     template = 'users/register.html'
     if request.method == 'POST':
@@ -44,7 +69,6 @@ def index(request):
     if request.user.is_authenticated:
         unconfirmed=Order.baskets.filter(customer=request.user)
         if unconfirmed.exists():
-            b=serializers.serialize('json',unconfirmed,fields=('note'))
             a=unconfirmed.values('note')[0]
             context['basket']=a['note']
     return render(request, 'orders/index.html', context)

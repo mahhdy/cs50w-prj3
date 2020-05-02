@@ -13,6 +13,7 @@ fSize = (
 
 order_status = (
     ('new', 'New'),
+    ('initiated', 'Initiated'),
     ('ready', 'Ready'),
     ('completed', 'Completed'),
 )
@@ -99,8 +100,8 @@ class Order(models.Model):
         return 0
     order_total = property(get_total_cost)
 
-    # def __str__(self):
-    #     return self.status + " by " + self.customer.full_name + " (" + str(self.order_total) + ")"
+    def __str__(self):
+        return self.status + " by " + self.customer.full_name + " (" + str(self.order_total) + ")"
 
     def __unicode__(self):
         return self.note

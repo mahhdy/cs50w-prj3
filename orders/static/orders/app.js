@@ -1,10 +1,8 @@
 /*jshint esversion: 8 */
 var basket = [];
-const total = () =>
-  _.round(
-    basket.reduce((a, b) => a + Number(b.price), 0),
-    2
-  );
+const total = () => {
+  return _.round(basket.reduce((a, b) => a + Number(b.price), 0), 2);
+};
 $(() => {
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover({
@@ -37,22 +35,22 @@ const updatePrice = (el) => {
   $(el).next().find("span:first").text(p);
 };
 
-function addMeToBasket(th,page) {
+function addMeToBasket(th, page) {
   let el;
-  let id=0;
-  let name='';
-  if (page=='a'){
+  let id = 0;
+  let name = '';
+  if (page == 'a') {
     el = $(th).closest("div").prev().find(":selected");
-    id=$(el).val();
-    name=$(el).text();
-  } else if (page=='b'){
+    id = $(el).val();
+    name = $(el).text();
+  } else if (page == 'b') {
     el = $(th);
-    id=$(el).data("id");
-    name=$(el).data("size") + ' ' +$(el).data("name");
-  }else if (page=='c'){
+    id = $(el).data("id");
+    name = $(el).data("size") + ' ' + $(el).data("name");
+  } else if (page == 'c') {
     el = $(th).closest("p").prev().find(":selected");
-    id=$(el).data("id");
-  }   
+    id = $(el).data("id");
+  }
   const n = new items(
     id,
     name.trim(),
@@ -69,7 +67,7 @@ function addMeToBasket(th,page) {
 const loadToppings = () => {
   var top = {};
   $.ajax({
-    url: document.location.origin+"/order/toppings/",
+    url: document.location.origin + "/order/toppings/",
     success: (d) => {
       d.forEach((a) => (top[a.name] = a.name));
     },
@@ -79,8 +77,7 @@ const loadToppings = () => {
 };
 const askForToppings = async (obj) => {
   const q = ["1", "2", "3", "4", "5"];
-  const Questions = [
-    {
+  const Questions = [{
       title: "Toppings 1",
       text: "Please Select your First Toppings of " + obj.name,
     },
@@ -134,7 +131,9 @@ const askForToppings = async (obj) => {
           <label class="custom-control-label" for="customSwitch${i}">${e} <span class="ml-3">(50￠)</span></label></div>`;
     });
     h += `</div>`;
-    const { value: fv } = await Swal.fire({
+    const {
+      value: fv
+    } = await Swal.fire({
       title: "Steak+Cheese Extra Options",
       html: h,
       focusConfirm: false,
@@ -152,7 +151,9 @@ const askForToppings = async (obj) => {
     }
     pushToBasket(obj);
   } else if (obj.extra) {
-    const { value: accept } = await Swal.fire({
+    const {
+      value: accept
+    } = await Swal.fire({
       title: "Subs Extra Options",
       input: "checkbox",
       inputValue: 0,
@@ -176,10 +177,13 @@ const pushToBasket = (obj) => {
   updateTotal();
   pushToServer();
 };
-const pushToServer=()=>{
-  $.post('order/add/',{csrfmiddlewaretoken:$('#token').text(),obj:JSON.stringify(basket)}, function (data) {
-    console.log(data);
-  });
+const pushToServer = () => {
+  if ($('#nav_profile').length) {
+    $.post('order/add/', {
+      csrfmiddlewaretoken: $('#token').text(),
+      obj: JSON.stringify(basket)
+    });
+  }
 };
 const addToBasket = (obj) => {
   let secondLine = "";
@@ -216,12 +220,12 @@ const removeFromBasket = (el) => {
   d = $(el).data();
   basket = basket.filter(
     (e) =>
-      !(
-        e.id == d.id &&
-        e.quantity == d.quantity &&
-        e.topping == d.topping &&
-        e.extra == d.extra
-      )
+    !(
+      e.id == d.id &&
+      e.quantity == d.quantity &&
+      e.topping == d.topping &&
+      e.extra == d.extra
+    )
   );
   updateTotal();
   $(el).closest("li").remove();
@@ -243,7 +247,9 @@ const submitOrder = async () => {
     );
   }
   $("#theBasket li").addClass("disabled");
-  const { value: accept } = await Swal.fire({
+  const {
+    value: accept
+  } = await Swal.fire({
     title: "Confirm Order",
     html: $("#theBasket")[0].outerHTML,
     input: "checkbox",
@@ -255,14 +261,15 @@ const submitOrder = async () => {
       return !result && "You need to confirm teh details to submit the order!";
     },
   });
-
   if (accept) {
-    Swal.fire(
-      "Confirmation",
-      "Order is initiated, Please Check your email",
-      "success"
-    );
-    resetBasket();
+    $.post('order/submit/',{csrfmiddlewaretoken:$('#token').text(),obj:JSON.stringify(basket)}).done(d=>{
+      Swal.fire(
+        "Confirmation",
+        `Order #${d.orderNo} is initiated, Please Check your email`,
+        "success"
+      );
+      resetBasket();
+    }).catch();    
   }
   $("#theBasket li").removeClass("disabled");
 };
