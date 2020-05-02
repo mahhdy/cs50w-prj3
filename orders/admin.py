@@ -32,6 +32,7 @@ class OrderInline(admin.TabularInline):
         (None, {'fields': ['food', 'toppings',
                            'quantity', 'item_total', 'extra', ]}),
     ]
+    extra=1
 
 
 class FoodAdmin(admin.ModelAdmin):

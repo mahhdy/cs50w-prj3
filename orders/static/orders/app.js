@@ -15,31 +15,21 @@ $(() => {
     content: function () {
       return $("#login-content").html();
     },
-    // ` <form  action="{% url 'login' %}" method="post" role="form">
-    //     <div class="form-group">
-    //       {% csrf_token %}
-    //       <input name='username' placeholder="Email" class="form-control" type="email">
-    //       <input name='password' placeholder="Password" class="form-control mt-1" minlength="6" type="password">
-    //       <div class='text-center mt-1'>
-    //         <button type="submit" class="btn btn-primary">Login »</button>
-    //         <button type="button" href='{%url "register" %}' class="btn btn-outline-dark mr-2">Register</button>
-    //       </div>
-    //       </div>
-    //   </form>`
+
   });
 });
 
 class items {
   constructor(id, name, quantity, price, topping, extra) {
     this.id = id;
-    this.name = name;
-    this.quantity = quantity;
-    this.price = price;
+    this.name = name.trim();
+    this.quantity = Number(quantity);
+    this.price = Number(price);
     this.topping = topping;
     this.extra = extra;
-    this.total = function () {
-      return Number(this.quantity) * Number(this.price);
-    };
+  }
+  total() {
+    return this.quantity * this.price;
   }
 }
 const updatePrice = (el) => {
@@ -47,13 +37,27 @@ const updatePrice = (el) => {
   $(el).next().find("span:first").text(p);
 };
 
-function addMeToBasket(th) {
-  const el = $(th).closest("div").prev().find(":selected");
+function addMeToBasket(th,page) {
+  let el;
+  let id=0;
+  let name='';
+  if (page=='a'){
+    el = $(th).closest("div").prev().find(":selected");
+    id=$(el).val();
+    name=$(el).text();
+  } else if (page=='b'){
+    el = $(th);
+    id=$(el).data("id");
+    name=$(el).data("size") + ' ' +$(el).data("name");
+  }else if (page=='c'){
+    el = $(th).closest("p").prev().find(":selected");
+    id=$(el).data("id");
+  }   
   const n = new items(
-    $(el).val(),
-    $(el).text(),
+    id,
+    name.trim(),
     1,
-    $(el).data("price"),
+    Number($(el).data("price")),
     $(el).data("toppings"),
     $(el).data("extra")
   );
@@ -65,7 +69,7 @@ function addMeToBasket(th) {
 const loadToppings = () => {
   var top = {};
   $.ajax({
-    url: "order/toppings/",
+    url: document.location.origin+"/order/toppings/",
     success: (d) => {
       d.forEach((a) => (top[a.name] = a.name));
     },
@@ -170,10 +174,12 @@ const pushToBasket = (obj) => {
   basket.push(obj);
   addToBasket(obj);
   updateTotal();
-  /*n.csrfmiddlewaretoken = '{{ csrf_token }}'
-  $.post('order/add/', n, function (data) {
-  console.log(data);
-  });*/
+  pushToServer();
+};
+const pushToServer=()=>{
+  $.post('order/add/',{csrfmiddlewaretoken:$('#token').text(),obj:JSON.stringify(basket)}, function (data) {
+    console.log(data);
+  });
 };
 const addToBasket = (obj) => {
   let secondLine = "";
@@ -220,6 +226,7 @@ const removeFromBasket = (el) => {
   updateTotal();
   $(el).closest("li").remove();
   updateTotal();
+  pushToServer();
 };
 const resetBasket = () => {
   basket = [];
@@ -239,15 +246,13 @@ const submitOrder = async () => {
   const { value: accept } = await Swal.fire({
     title: "Confirm Order",
     html: $("#theBasket")[0].outerHTML,
-    // '<input id="swal-input1" class="swal2-input">' +
-    // '<input id="swal-input2" class="swal2-input">',
     input: "checkbox",
     inputValue: 0,
     showCancelButton: true,
-    inputPlaceholder: `Is above Order Details [with total of ${total()}$] Correct?`,
+    inputPlaceholder: `Is above order details with total of ${total()}$ correct?`,
     confirmButtonText: 'Continue<i class="fa fa-arrow-right"></i>',
     inputValidator: (result) => {
-      return !result && "You need to Mark the CheckBox to submit the Order!";
+      return !result && "You need to confirm teh details to submit the order!";
     },
   });
 

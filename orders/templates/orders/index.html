@@ -28,7 +28,7 @@
                 <div class="input-group-append">
                   <span class="input-group-text px-1">0</span>
                   <span class='my-auto'><a href='#'><i class="fas fa-cart-plus text-dark fa-lg"
-                        onclick='addMeToBasket(this)'></i></a></span>
+                        onclick='addMeToBasket(this,"a")'></i></a></span>
                 </div>
               </div>
             </div>
@@ -71,15 +71,7 @@
 {% endblock %} {% block script %}
 <script>
   $(() => {
-    $('#theBasket').empty();
-    if (localStorage.getItem('pizzaOrder')) {
-      basket = JSON.parse(localStorage.getItem('pizzaOrder'));
-      basket.forEach(o => addToBasket(o));
-    }
     $('select').trigger('change');
-    updateTotal();
   });
-
-
   </script>
   {% endblock %}

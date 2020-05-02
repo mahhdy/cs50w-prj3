@@ -13,8 +13,10 @@
     <div class="card">
       <a href='{% url "foods" t.id %}'><img src="{{t.picture.url}}" class="card-img-top" alt="{{t.name}}"></a>
       <div class="card-body">
-        <a href='{% url "foods" t.id %}'> <h5 class="card-title">{{t.name}}</h5></a>
-        <p class="card-text">This is a longer card with supporting text.</p>
+        <a href='{% url "foods" t.id %}'> <h5 class="card-title">{{t.size|capfirst}} {{t.name}}</h5></a>
+        <p class="card-text">{{t.price}} <a href='#'><i class="fas fa-cart-plus text-dark fa-lg"
+          data-id='{{t.id}}' data-toppings='{{t.topping_count}}' data-price='{{t.price}}' data-extra='{{t.accepts_extra|lower}}'
+          data-name='{{t.name}}' data-size='{{t.size}}' onclick='addMeToBasket(this,"b")'></i></a></p>
       </div>
     </div>
   </div>
