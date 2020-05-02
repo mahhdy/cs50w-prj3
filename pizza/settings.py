@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +72,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pizza.wsgi.application'
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
