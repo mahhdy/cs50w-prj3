@@ -1,4 +1,5 @@
 Django
+django_extensions
 psycopg2
 Pillow
 marshmallow
