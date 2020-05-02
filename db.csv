@@ -1,0 +1,68 @@
+Cheese,small,Pizza Regular,0,False,12.7
+1 topping,small,Pizza Regular,1,False,13.7
+2 toppings,small,Pizza Regular,2,False,15.2
+3 toppings,small,Pizza Regular,3,False,16.2
+Special,small,Pizza Regular,5,False,17.75
+Cheese,large,Pizza Regular,0,False,17.95
+1 topping,large,Pizza Regular,1,False,19.95
+2 toppings,large,Pizza Regular,2,False,21.95
+3 toppings,large,Pizza Regular,3,False,23.95
+Special,large,Pizza Regular,5,False,25.95
+Cheese,small,Pizza Sicilian,0,False,24.45
+1 item,small,Pizza Sicilian,1,False,26.45
+2 items,small,Pizza Sicilian,2,False,28.45
+3 items,small,Pizza Sicilian,3,False,29.45
+Special,small,Pizza Sicilian,4,False,30.45
+Cheese,large,Pizza Sicilian,0,False,38.7
+1 item,large,Pizza Sicilian,1,False,40.7
+2 items,large,Pizza Sicilian,2,False,42.7
+3 items,large,Pizza Sicilian,3,False,44.7
+Special,large,Pizza Sicilian,4,False,45.7
+Cheese,small,Subs,0,True,6.5
+Italian,small,Subs,0,True,6.5
+Ham + Cheese,small,Subs,0,True,6.5
+Meatball,small,Subs,0,True,6.5
+Tuna,small,Subs,0,True,6.5
+Turkey,small,Subs,0,True,7.5
+Chicken Parmigiana,small,Subs,0,True,7.5
+Eggplant Parmigiana,small,Subs,0,True,6.5
+Steak,small,Subs,0,True,6.5
+Steak + Cheese,small,Subs,0,True,6.95
+"Sausage, Peppers & Onions",large,Subs,0,True,8.5
+Hamburger,small,Subs,0,True,4.6
+Cheeseburger,small,Subs,0,True,5.1
+Fried Chicken,small,Subs,0,True,6.95
+Veggie,small,Subs,0,True,6.95
+Cheese,large,Subs,0,True,7.95
+Italian,large,Subs,0,True,7.95
+Ham + Cheese,large,Subs,0,True,7.95
+Meatball,large,Subs,0,True,7.95
+Tuna,large,Subs,0,True,7.95
+Turkey,large,Subs,0,True,8.5
+Chicken Parmigiana,large,Subs,0,True,8.5
+Eggplant Parmigiana,large,Subs,0,True,7.95
+Steak,large,Subs,0,True,7.95
+Steak + Cheese,large,Subs,0,True,8.5
+Hamburger,large,Subs,0,True,6.95
+Cheeseburger,large,Subs,0,True,7.45
+Fried Chicken,large,Subs,0,True,8.5
+Veggie,large,Subs,0,True,8.5
+Baked Ziti w/Mozzarella,small,Pasta,0,True,6.5
+Baked Ziti w/Meatballs,small,Pasta,0,True,8.75
+Baked Ziti w/Chicken,small,Pasta,0,True,9.75
+Garden Salad,small,Salads,0,True,6.25
+Greek Salad,small,Salads,0,True,8.25
+Antipasto,small,Salads,0,True,8.25
+Salad w/Tuna,small,Salads,0,True,8.25
+Garden Salad,small,Dinner Platters,0,True,40.00 
+Greek Salad,small,Dinner Platters,0,True,50.00 
+Antipasto,small,Dinner Platters,0,True,50.00 
+Baked Ziti,small,Dinner Platters,0,True,40.00 
+Meatball Parm,small,Dinner Platters,0,True,50.00 
+Chicken Parm,small,Dinner Platters,0,True,55.00 
+Garden Salad,large,Dinner Platters,0,True,65.00 
+Greek Salad,large,Dinner Platters,0,True,75.00 
+Antipasto,large,Dinner Platters,0,True,75.00 
+Baked Ziti,large,Dinner Platters,0,True,65.00 
+Meatball Parm,large,Dinner Platters,0,True,75.00 
+Chicken Parm,large,Dinner Platters,0,True,85.00 

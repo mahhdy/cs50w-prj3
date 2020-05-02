@@ -37,18 +37,24 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href='{% url "courses" "1" %}'>Regular Pizza<span class="sr-only">(current)</span></a>
+            <a class="nav-link  text-wrap" href='{% url "courses" "8" %}'>Pizza<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "courses" "2" %}'>Sicillian Pizza</a>
+            <a class="nav-link  text-wrap" href='{%url "courses" "9" %}'>Sicillian's</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "courses" "3" %}'>Subs</a>
+            <a class="nav-link" href='{%url "courses" "10" %}'>Subs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='{%url "courses" "4" %}'>Salads</a>
+            <a class="nav-link" href='{%url "courses" "11" %}'>Pasta</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item">
+            <a class="nav-link" href='{%url "courses" "13" %}'>Platters</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href='{%url "courses" "12" %}'>Salads</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href='{%url "" %}' id="navbarDropdown" role="button"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               More...
@@ -59,7 +65,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href='{%url "" %}'>Something else here</a>
             </div>
-          </li>
+          </li> -->
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -120,8 +126,7 @@
   </footer>
   {% block script %}
   {% endblock %}
-  {% if user.is_authenticated  %}
-  <p class='d-none' id='secret'>{{basket}}</p>
+
   <script>
     $(() => {
       let basket2 =[];
@@ -141,6 +146,8 @@
       }
     });
   </script>
+  {% if user.is_authenticated  %}
+    <p class='d-none' id='secret'>{{basket}}</p>  
   {% else %}
   <div id="login-content" class="d-none">
     <form action="{% url 'login' %}" method="post" role="form">

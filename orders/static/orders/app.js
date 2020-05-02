@@ -246,6 +246,15 @@ const submitOrder = async () => {
       "warning"
     );
   }
+  if ($('#nav_profile').length==0) {
+    await Swal.fire(
+      "Need Login",
+      "Please Login Before Submitting the Order",
+      "warning"
+    );
+    await $('a.nav-link[data-toggle="popover"]').trigger('click'); 
+    return $('h3.popover-header').add('div.popover-body').addClass('bg-danger');
+  }  
   $("#theBasket li").addClass("disabled");
   const {
     value: accept

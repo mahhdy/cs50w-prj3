@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -99,22 +100,7 @@ LOGGING = {
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    # 'default2': {
-    #     'ENGINE': 'django.db.backends.mysql', 
-    #     'NAME': 'pizza_me',
-    #     'USER': 'm4i3tfp5i32v',
-    #     'PASSWORD': 'Ava@1219',
-    #     'HOST': '107.180.13.247',
-    #     'PORT': '3306',
-    #     'OPTIONS':{
-    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    #         }
-    # },
-    'heroku':{
+    'default':{
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd67rqq7ecfafi7',
         'USER': 'tfolptxnhfxbtu',
@@ -122,7 +108,10 @@ DATABASES = {
         'HOST': 'ec2-50-17-90-177.compute-1.amazonaws.com',
         'PORT': '5432',
     },
-
+    'local': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 }
 
 
@@ -174,3 +163,6 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'index'
 
+
+# Configure Django App for Heroku.
+django_heroku.settings(locals())
