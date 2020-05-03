@@ -32,7 +32,7 @@ class OrderInline(admin.TabularInline):
         (None, {'fields': ['food', 'toppings',
                            'quantity', 'item_total', 'extra', ]}),
     ]
-    extra=1
+    extra=0
 
 
 class FoodAdmin(admin.ModelAdmin):

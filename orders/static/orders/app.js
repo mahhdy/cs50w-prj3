@@ -122,7 +122,7 @@ const askForToppings = async (obj) => {
           title: "Unable to proceed!, Please Try Again.",
         });
       });
-  } else if (obj.id == 31 || obj.id == 32) {
+  } else if (obj.id == 30 || obj.id == 45) {
     const steakExtra = ["Mushrooms", "Green Peppers", "Onions", "Cheese"];
     let h = ``;
     steakExtra.forEach((e, i) => {
@@ -200,7 +200,7 @@ const addToBasket = (obj) => {
   }
   $(`<li class="list-group-item d-flex justify-content-between lh-condensed py-1">
         <div>
-          <h6 class="my-0">${obj.name}</h6>
+          <h6 class="my-0 mr-auto text-left">${obj.name}</h6>
           ${secondLine ? secondLine : ""}
         </div>
         <span class="text-muted">$${
