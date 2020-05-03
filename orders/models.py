@@ -67,7 +67,7 @@ class Food(models.Model):
         return reverse('foods', args=[self.id])
 
     def __str__(self):
-        return self.food_type.name + "/" + self.name + ' ' + self.size
+        return self.size.title() + " " + self.name+' ' +self.food_type.name    
 
 
 class BasketManager(models.Manager):
@@ -89,6 +89,8 @@ class Order(models.Model):
     order_details = models.ForeignKey(
         'Order_detail', blank=True, null=True, on_delete=models.SET_NULL, related_name='details')
 
+    def get_absolute_url(self):
+        return reverse('orderDetail', args=[self.id])
     class Meta:
         ordering = ['-date_added']
     objects = models.Manager()
@@ -110,13 +112,13 @@ class Order_detail(models.Model):
     order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name="items")
     food = models.ForeignKey(
-        Food, on_delete=models.CASCADE, related_name="order_items")
+        Food, on_delete=models.CASCADE, related_name="ordered")
     toppings = models.ManyToManyField(Topping, default='None', blank=True)
     quantity = models.PositiveIntegerField(default=1)
     extra = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return self.food.name + ' by ' + self.order.customer.full_name
+        return 'Order#: ' + str(self.order.id) + ' ' + self.food.food_type.name +  ' /' + self.food.name# + ' by ' + self.order.customer.full_name
 
     def get_cost(self):
         return self.food.price * self.quantity

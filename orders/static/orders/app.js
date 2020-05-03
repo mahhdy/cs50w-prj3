@@ -179,7 +179,7 @@ const pushToBasket = (obj) => {
 };
 const pushToServer = () => {
   if ($('#nav_profile').length) {
-    $.post('order/add/', {
+    $.post(document.location.origin + '/order/add/', {
       csrfmiddlewaretoken: $('#token').text(),
       obj: JSON.stringify(basket)
     });
@@ -271,7 +271,7 @@ const submitOrder = async () => {
     },
   });
   if (accept) {
-    $.post('order/submit/',{csrfmiddlewaretoken:$('#token').text(),obj:JSON.stringify(basket)}).done(d=>{
+    $.post(document.location.origin + '/order/submit/',{csrfmiddlewaretoken:$('#token').text(),obj:JSON.stringify(basket)}).done(d=>{
       Swal.fire(
         "Confirmation",
         `Order #${d.orderNo} is initiated, Please Check your email`,

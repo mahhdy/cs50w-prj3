@@ -2,16 +2,24 @@
 {% block head %}
 {% endblock %}
 
-{% block title %}  Order Detail Page  {% endblock %}
+{% block title %}  Order #: {{k.id}}  {% endblock %}
 
 {% block content %}
-<h1 class='text-center'> </h1>
-
+<h1 class='text-center'> Details of Order #: {{k.id}}</h1>
+<h2 class='text-center'> current status: {{k.status}} </h2>
 <div class="row ">
-<div class='col-md-6'>
-{{ order }}
+    <div class='col-9 col-md-6 col-lg-4 mx-auto'>
 
-</div>
+    {% for d in k.items.all%}
+    <li class="list-group-item d-flex justify-content-between lh-condensed py-1">
+        <div>
+          <h5 class="my-0">{{d.food.name}} {{d.food.food_type.name}} </h5>
+          <small class="text-muted">{{d.toppings|default_if_none:'' }} {{d.extra|default_if_none:''}}</small>
+        </div>
+        <span class="text-muted">${{d.food.price}} </span>
+      </li>
+    {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

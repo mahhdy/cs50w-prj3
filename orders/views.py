@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core import serializers
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Food_type, Food, Topping,Order,Order_detail
+from django.db.models import Q
 import sys,json
 # Create your views here.
 
@@ -45,6 +46,8 @@ def submitOrder(request):
         newOrder.save()
         return JsonResponse({'orderNo': newOrder.id})
     return False
+
+    
 def signup(request):
     template = 'users/register.html'
     if request.method == 'POST':
@@ -119,17 +122,27 @@ def cart(request):
 
 @login_required
 def myorder(request):
-    
-    return render(request, 'orders/orders.html', {})
+    u = request.user
+    order=Order.objects.filter(customer=u).exclude(status='new')    
+    return render(request, 'orders/orders.html', {'order':order})
 
 @login_required
 def order(request, id=None):
-    
-    return render(request, 'orders/cart.html', {})
+    u = request.user
+    if u.is_staff:
+        order=get_object_or_404(Order,~Q(status='new'),id=id)
+    else:
+        order=get_object_or_404(Order,~Q(status='new'),customer=u,id=id)
+    return render(request, 'orders/order.html', {'k':order})
 
 @login_required
 def allorders(request):
-    return render(request, 'orders/orders.html', {})
+    u = request.user
+    if u.is_staff:
+        order=Order.objects.exclude(status='new')
+    else:
+        order=Order.objects.filter(customer=u).exclude(status='new')
+    return render(request, 'orders/orders.html', {'order':order})
 
 
 @login_required
