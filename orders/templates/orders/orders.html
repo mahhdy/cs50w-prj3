@@ -5,38 +5,67 @@
 {% block title %} Order List {% endblock %}
 
 {% block content %}
-<h1 class='text-center'>Orders</h1>
+
 <div class='container'>
-  <div class="card-deck">
+  <div class="card">
+    <div class="card-header">
+    <div class='row'>
+      <div class='col-3'>
+        <input class='form-control' type='date' placeholder='Order Date' value='{% now "Y-m-d" %}'>
+      </div>
+      <div class='col-6'>
+        <h1 class='text-center m-0'>Orders<a href='#'><i class="fas fa-sync-alt ml-1 fa-xs" onclick='reloadOrders()'></i></a></h1>     
+      </div>
+      <div class='col-3'>
+        <div class='input-group'>
+        <label class='my-auto mr-1'>Status</label>
+        <select class="custom-select mr-sm-2 py-0" onchange='filterOrders(this)'>
+          <option value='all'>All</option>
+        {% for a,b in s%}
+          <option value='{{a}}'>{{b}}</option>
+        {% endfor %}
+        </select>
+        </div>
+
+      </div> 
+    </div>
+    </div>
+  <div class="row row-cols-1 row-cols-md-3 p-2">
     {% for o in order%}
-    <div class="card">
-      {% if o.status == 'initiated' %}
-        <div class='card-body bg-warning'>
-      {% endif %}     
-      {% if o.status == 'ready' %}
-        <div class='card-body bg-info'>
-      {% endif %} 
-      {% if o.status == "completed" %}
-        <div class='card-body bg-success'>
-      {% endif %}
+    <div class="col mb-4" data-status='{{o.status}}'>
+    <div class="card h-100">
+    <div class='card-body p-2'>
           <h5 class="card-title d-flex justify-content-between align-items-center mb-1">
-            <a href='{% url "orderDetail" o.id %}'>Order#{{o.id|ljust:"15" }} {{ o.date_added|date:"SHORT_DATE_FORMAT" }}
+            <a href='{% url "orderDetail" o.id %}'>Order#{{o.id|ljust:"15" }}
             </a>
-            {% if user.is_staff %}
-            <a class='btn btn-secondary btn-sm mr-auto ml-2' href='{% url "admin:orders_order_change" o.id %}'>update</a>
-            {% endif %}
-          <span class="badge badge-primary badge-pill">{{o.order_total}}</span>
+          <span class="badge badge-primary badge-pill">$ {{o.order_total}}</span>
           </h5>
         
         <ul class="list-group py-1">
-          <!--list-group-horizontal !-->
           {% for d in o.items.all%}
-          <li class="list-group-item py-1 d-flex justify-content-between align-items-center ">{{forloop.counter}}- {{d.food}}<span class="badge badge-secondary badge-pill">{{d.quantity}}</span></li>
+            {% if o.status == 'initiated' %}
+              <li class='list-group-item py-1 d-flex justify-content-between align-items-center bg-warning'>
+            {% endif %}     
+            {% if o.status == 'ready' %}
+              <li class='list-group-item py-1 d-flex justify-content-between align-items-center bg-info'>
+            {% endif %} 
+            {% if o.status == "completed" %}
+              <li class='list-group-item py-1 d-flex justify-content-between align-items-center bg-success'>
+            {% endif %}          
+            {{forloop.counter}}- {{d.food}}<span class="badge badge-secondary badge-pill">{{d.quantity}}</span></li>
           {% endfor %}
           <ul>
       </div>
-
-
+      <div class="card-footer py-1 d-flex justify-content-between align-items-center ">
+        <small class="text-muted">{{ o.date_added|date:"j-M-Y" }} by: {{ o.customer.full_name }}</small>
+        {% if user.is_staff %}
+          <a class='btn btn-secondary btn-sm ml-auto py-0' href='{% url "admin:orders_order_change" o.id %}'>update</a>
+        {% else%}
+          <a class='btn btn-outline-success btn-sm ml-auto py-0 disabled'>{{o.status}}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
     {% empty %}
     <div class='mx-auto'>
       <p> There is No record of any order! </p>
@@ -44,7 +73,25 @@
     {% endfor %}
   </div>
 </div>
+</div>
 {% endblock %}
 
 {% block script %}
+<script>
+$(()=>{
+  {% if user.is_staff %}
+    $('[data-status=completed],[data-status=ready]').hide();
+  {% endif%}
+});
+const filterOrders=(el)=>{
+  $('[data-status]').hide();
+  if (el.value=='all'){
+    return $('[data-status]').show();
+  }
+  $('[data-status='+el.value+']').show();
+}
+const reloadOrders=()=>{
+  location.reload();
+}
+</script>
 {% endblock %}

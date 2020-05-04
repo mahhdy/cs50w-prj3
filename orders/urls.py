@@ -19,5 +19,4 @@ urlpatterns = [
     path('order/toppings/',views.toppings,name='toppings'),
     path('logout/',views.logout_view,name='logout'),
     path('regnew/',views.signup,name='registnew'), 
-
-]# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

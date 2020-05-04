@@ -6,7 +6,7 @@ from .forms import SignUpForm
 from django.conf import settings
 from django.core import serializers
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Food_type, Food, Topping,Order,Order_detail
+from .models import Food_type, Food, Topping,Order,Order_detail,order_status
 from django.db.models import Q
 import sys,json
 # Create your views here.
@@ -124,7 +124,7 @@ def cart(request):
 def myorder(request):
     u = request.user
     order=Order.objects.filter(customer=u).exclude(status='new')    
-    return render(request, 'orders/orders.html', {'order':order})
+    return render(request, 'orders/orders.html', {'order':order,'s':order_status})
 
 @login_required
 def order(request, id=None):
@@ -142,7 +142,7 @@ def allorders(request):
         order=Order.objects.exclude(status='new')
     else:
         order=Order.objects.filter(customer=u).exclude(status='new')
-    return render(request, 'orders/orders.html', {'order':order})
+    return render(request, 'orders/orders.html', {'order':order,'s':order_status})
 
 
 @login_required

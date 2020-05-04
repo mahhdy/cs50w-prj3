@@ -278,7 +278,9 @@ const submitOrder = async () => {
         "success"
       );
       resetBasket();
-    }).catch();    
+      window.location.replace(document.location.origin);
+    }).fail((d)=>alert('Something was wrong! try again!')
+    );    
   }
   $("#theBasket li").removeClass("disabled");
 };
