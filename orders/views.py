@@ -6,7 +6,7 @@ from .forms import SignUpForm
 from django.conf import settings
 from django.core import serializers
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Food_type, Food, Topping,Order,Order_detail,order_status
+from .models import Food_type, Food, Topping,Order,Order_detail,order_status,Extra
 from django.db.models import Q
 import sys,json
 # Create your views here.
@@ -94,6 +94,10 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+
+def extras(request):
+    return JsonResponse(list(Extra.objects.values()), safe=False)
 
 
 def toppings(request):

@@ -32,6 +32,12 @@ class Topping(models.Model):
     def __str__(self):
         return self.name
 
+class Extra(models.Model):
+    name = models.CharField(max_length=20)
+    price=models.DecimalField(max_digits=4, decimal_places=2,default=0.50)
+    def __str__(self):
+        return self.name    
+
 
 class Food_type(models.Model):
     name = models.CharField(max_length=15)
@@ -86,8 +92,6 @@ class Order(models.Model):
     confirmed = models.BooleanField(default=False)
     status = models.CharField(
         max_length=10, choices=order_status, default='new')
-    order_details = models.ForeignKey(
-        'Order_detail', blank=True, null=True, on_delete=models.SET_NULL, related_name='details')
 
     def get_absolute_url(self):
         return reverse('orderDetail', args=[self.id])

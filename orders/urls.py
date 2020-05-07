@@ -17,6 +17,7 @@ urlpatterns = [
     path('order/myorder/',views.myorder,name='myorder'),
     path('order/profile/',views.profile,name='profile'),
     path('order/toppings/',views.toppings,name='toppings'),
+    path('order/extras/',views.extras,name='extra'),
     path('logout/',views.logout_view,name='logout'),
     path('regnew/',views.signup,name='registnew'), 
 ]

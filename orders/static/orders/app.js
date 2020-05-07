@@ -64,19 +64,11 @@ function addMeToBasket(th, page) {
   }
   askForToppings(n);
 }
-const loadToppings = () => {
-  var top = {};
-  $.ajax({
-    url: document.location.origin + "/order/toppings/",
-    success: (d) => {
-      d.forEach((a) => (top[a.name] = a.name));
-    },
-    async: false,
-  });
-  return top;
-};
+
 const askForToppings = async (obj) => {
   const q = ["1", "2", "3", "4", "5"];
+    let ex=await $.get(document.location.origin + "/order/extras/");
+    extra=ex.map(a=>[a.name,a.price]);  
   const Questions = [{
       title: "Toppings 1",
       text: "Please Select your First Toppings of " + obj.name,
@@ -99,7 +91,9 @@ const askForToppings = async (obj) => {
     },
   ];
   if (obj.topping) {
-    const topps = await loadToppings();
+    let newT=await $.get(document.location.origin + "/order/toppings/");
+    let topps ={};
+    newT.forEach((a) => (topps[a.name] = a.name));
     await swal
       .mixin({
         input: "select",
@@ -123,12 +117,12 @@ const askForToppings = async (obj) => {
         });
       });
   } else if (obj.id == 30 || obj.id == 45) {
-    const steakExtra = ["Mushrooms", "Green Peppers", "Onions", "Cheese"];
+    // const steakExtra = ["Mushrooms", "Green Peppers", "Onions", "Cheese"];
     let h = ``;
-    steakExtra.forEach((e, i) => {
+    extra.forEach((e, i) => {
       h += `<div class="custom-control custom-switch text-left">
           <input type="checkbox" data-steek class="custom-control-input" id="customSwitch${i}">
-          <label class="custom-control-label" for="customSwitch${i}">${e} <span class="ml-3">(50￠)</span></label></div>`;
+          <label class="custom-control-label" for="customSwitch${i}">${e[0]} <span class="ml-3">(${e[1]*100}￠)</span></label></div>`;
     });
     h += `</div>`;
     const {
@@ -142,10 +136,10 @@ const askForToppings = async (obj) => {
     if (fv) {
       obj.price = Number(obj.price);
       obj.extra = "";
-      steakExtra.forEach((e, i) => {
+      extra.forEach((e, i) => {
         if (fv[i]) {
-          obj.extra += " " + e;
-          obj.price += 0.5;
+          obj.extra += " " + String(e[0]);
+          obj.price += Number(e[1]);
         }
       });
     }
@@ -157,12 +151,12 @@ const askForToppings = async (obj) => {
       title: "Subs Extra Options",
       input: "checkbox",
       inputValue: 0,
-      inputPlaceholder: "Add extra cheese for 50 cents.",
+      inputPlaceholder: `Add extra ${extra[0][0]} for ${extra[0][1]} cents.`,
       confirmButtonText: "add to order",
     });
     if (accept) {
-      obj.extra = "Extra Cheese";
-      obj.price += 0.5;
+      obj.extra = `Extra ${extra[0][0]}`;
+      obj.price += Number(extra[0][1]);
     } else {
       obj.extra = "";
     }

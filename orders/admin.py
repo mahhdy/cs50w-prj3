@@ -48,9 +48,9 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('customer', 'chef', 'date_added',
                     'order_total', 'confirmed', 'status',)
     list_filter = ('customer', 'chef', 'confirmed', 'status',
-                   'date_added', 'order_details__food__food_type__name')
+                   'date_added', 'items__food__food_type__name')
     list_editable = ('confirmed', 'status', 'chef')
-    search_fields = ('customer', 'note', 'order_details__food__name')
+    search_fields = ('customer', 'note', 'items__food__name')
     ordering = ('-date_added', 'confirmed', 'status',)
     actions = [make_ready, make_completed]
 
@@ -59,3 +59,4 @@ admin.site.register(Topping)
 admin.site.register(Food, FoodAdmin)
 admin.site.register(Food_type)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Extra)
